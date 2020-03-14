@@ -27,7 +27,7 @@ const get = (url = 'https://www.worldometers.info/coronavirus') =>
                     data[t].new_deaths = formatNum(table[4][i]);
                     data[t].total_recovered = formatNum(table[5][i]);
                     data[t].active_cases = formatNum(table[6][i]);
-                    data[t].seriour_cases = formatNum(table[7][i]);
+                    data[t].serious_cases = formatNum(table[7][i]);
                     data[t].total_cases_per_million = formatNum(table[8][i], true);
                 }
             });
