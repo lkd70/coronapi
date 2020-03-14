@@ -1,0 +1,30 @@
+{
+  "name": "coronapi",
+  "version": "0.1.0",
+  "description": "A Coronavirus (COVID-19) tracking API.",
+  "main": "data.js",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "cheerio": "^1.0.0-rc.3",
+    "cheerio-tableparser": "^1.0.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LKD70/coronapi.git"
+  },
+  "keywords": [
+    "corona",
+    "coronavirus",
+    "covid-19",
+    "LKD70"
+  ],
+  "author": "LKD70",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/LKD70/coronapi/issues"
+  },
+  "homepage": "https://github.com/LKD70/coronapi#readme"
+}
