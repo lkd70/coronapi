@@ -20,6 +20,7 @@ const get = (url = 'https://www.worldometers.info/coronavirus') =>
 
             table[0].map((t, i) => {
                 if (i !== 0) {
+                    t = t.replace(/:/g, '');
                     data[t] = {};
                     data[t].total_cases = formatNum(table[1][i]);
                     data[t].new_cases = formatNum(table[2][i]);
