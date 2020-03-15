@@ -1,6 +1,6 @@
 {
   "name": "coronapi",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "description": "A Coronavirus (COVID-19) tracking API.",
   "main": "./dist/index.js",
   "dependencies": {
