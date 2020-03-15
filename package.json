@@ -1,15 +1,15 @@
 {
   "name": "coronapi",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "A Coronavirus (COVID-19) tracking API.",
-  "main": "data.js",
+  "main": "./dist/index.js",
   "dependencies": {
     "axios": "^0.19.2",
-    "cheerio": "^1.0.0-rc.3",
-    "cheerio-tableparser": "^1.0.1"
+    "cheerio": "^1.0.0-rc.3"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -26,5 +26,9 @@
   "bugs": {
     "url": "https://github.com/LKD70/coronapi/issues"
   },
-  "homepage": "https://github.com/LKD70/coronapi#readme"
+  "homepage": "https://github.com/LKD70/coronapi#readme",
+  "devDependencies": {
+    "@types/cheerio": "^0.22.16",
+    "typescript": "^3.8.3"
+  }
 }

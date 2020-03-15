@@ -1,0 +1,14 @@
+{
+"compilerOptions": {
+		"allowJs": false,
+    "outDir": "dist",
+    "module": "commonjs",
+    "target": "es6",
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+	},
+	"include": [
+			"./src/*"
+	]
+}

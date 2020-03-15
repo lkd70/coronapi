@@ -1,11 +1,18 @@
 dependencies:
   axios: 0.19.2
   cheerio: 1.0.0-rc.3
-  cheerio-tableparser: 1.0.1
+devDependencies:
+  '@types/cheerio': 0.22.16
+  typescript: 3.8.3
 lockfileVersion: 5.1
 packages:
+  /@types/cheerio/0.22.16:
+    dependencies:
+      '@types/node': 13.9.1
+    dev: true
+    resolution:
+      integrity: sha512-bSbnU/D4yzFdzLpp3+rcDj0aQQMIRUBNJU7azPxdqMpnexjUSvGJyDuOBQBHeOZh1mMKgsJm6Dy+LLh80Ew4tQ==
   /@types/node/13.9.1:
-    dev: false
     resolution:
       integrity: sha512-E6M6N0blf/jiZx8Q3nb0vNaswQeEyn0XlupO+xN6DtJ6r6IT4nXrTry7zhIfYvFCl3/8Cu6WIysmUBKiqV0bqQ==
   /axios/0.19.2:
@@ -18,10 +25,6 @@ packages:
     dev: false
     resolution:
       integrity: sha1-aN/1++YMUes3cl6p4+0xDcwed24=
-  /cheerio-tableparser/1.0.1:
-    dev: false
-    resolution:
-      integrity: sha1-5VrS3LU2G4wyOmy7jAzUbjy98c0=
   /cheerio/1.0.0-rc.3:
     dependencies:
       css-select: 1.2.0
@@ -167,11 +170,19 @@ packages:
     dev: false
     resolution:
       integrity: sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA==
+  /typescript/3.8.3:
+    dev: true
+    engines:
+      node: '>=4.2.0'
+    hasBin: true
+    resolution:
+      integrity: sha512-MYlEfn5VrLNsgudQTVJeNaQFUAI7DkhnOjdpAp4T+ku1TfQClewlbSuTVHiA+8skNBgaf02TL/kLOvig4y3G8w==
   /util-deprecate/1.0.2:
     dev: false
     resolution:
       integrity: sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=
 specifiers:
+  '@types/cheerio': ^0.22.16
   axios: ^0.19.2
   cheerio: ^1.0.0-rc.3
-  cheerio-tableparser: ^1.0.1
+  typescript: ^3.8.3
