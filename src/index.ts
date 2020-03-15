@@ -22,6 +22,13 @@ const formatNum = (number: string, float: boolean = false) =>
     (float ? parseFloat : parseInt)(number.replace(/,/g, '')
     .replace(/\-/g, '').replace(/\+/g, '')) || 0;
 
+const formatName = (name: string) => {
+    name = name.replace(/:/g, '');
+    if (name[0] === ' ') name = name.substr(1);
+    if (name[name.length-1] === ' ') name = name.slice(0, -1);
+    return name;
+}
+
 const get = (url = 'https://www.worldometers.info/coronavirus') =>
     new Promise<Idata>((resolve, reject) => axios.get(url).then(res => {
         if (res.status === 200) {
@@ -30,8 +37,7 @@ const get = (url = 'https://www.worldometers.info/coronavirus') =>
             let data: Idata = {};
             body('#main_table_countries > tbody > tr').each((_ri, row) => {
                 const cols = cheerio(row).find('td');
-                const name = cheerio(cols[0]).text().replace(/:/g, '');
-                data[name.substring(1, name.length-1)] = {
+                data[formatName(cheerio(cols[0]).text())] = {
                     total_cases: formatNum(cheerio(cols[1]).text()),
                     new_cases: formatNum(cheerio(cols[2]).text()),
                     total_deaths: formatNum(cheerio(cols[3]).text()),
