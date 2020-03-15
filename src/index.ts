@@ -30,7 +30,8 @@ const get = (url = 'https://www.worldometers.info/coronavirus') =>
             let data: Idata = {};
             body('#main_table_countries > tbody > tr').each((_ri, row) => {
                 const cols = cheerio(row).find('td');
-                data[cheerio(cols[0]).text().replace(/:/g, '')] = {
+                const name = cheerio(cols[0]).text().replace(/:/g, '');
+                data[name.substring(1, name.length-1)] = {
                     total_cases: formatNum(cheerio(cols[1]).text()),
                     new_cases: formatNum(cheerio(cols[2]).text()),
                     total_deaths: formatNum(cheerio(cols[3]).text()),
