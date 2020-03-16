@@ -1,7 +1,7 @@
 'use strict';
 
-import axios from 'axios';
-import * as cheerio from 'cheerio';
+import { request } from 'https';
+import { parse } from 'parse5';
 
 interface Icountry {
     total_cases: number,
@@ -11,48 +11,119 @@ interface Icountry {
     total_recovered: number,
     active_cases: number,
     serious_cases: number,
-    total_cases_per_million: number,
+    cases_per_million: number,
 }
 
-interface Idata {
+interface Icountries {
     [name: string]: Icountry
 }
 
-const formatNum = (number: string, float: boolean = false) => 
+interface Idata {
+    countries: Icountries,
+    total: Icountry
+}
+
+interface Idocnode {
+    nodeName: string,
+    name: string,
+    publicId: string,
+    systemId: string,
+    parent: Idocnode
+    childNodes: Idocnode
+}
+
+interface Idoc {
+    nodeName: string,
+    mode: string,
+    childNodes: Array<Idocnode>
+}
+
+const formatNum = (number: string, float: boolean = false) =>
     (float ? parseFloat : parseInt)(number.replace(/,/g, '')
-    .replace(/\-/g, '').replace(/\+/g, '')) || 0;
+        .replace(/\-/g, '').replace(/\+/g, '')) || 0;
 
 const formatName = (name: string) => {
     name = name.replace(/:/g, '');
     if (name[0] === ' ') name = name.substr(1);
-    if (name[name.length-1] === ' ') name = name.slice(0, -1);
+    if (name[name.length - 1] === ' ') name = name.slice(0, -1);
     return name;
 }
 
-const get = (url = 'https://www.worldometers.info/coronavirus') =>
-    new Promise<Idata>((resolve, reject) => axios.get(url).then(res => {
-        if (res.status === 200) {
-            const body = cheerio.load(res.data);
+const get = new Promise<Idata>((resolve, reject) => {
+    const url = 'https://www.worldometers.info/coronavirus/';
+    const req = request(url, res => {
+        let da = '';
+        res.on('data', d => da += d);
+        req.on('error', reject);
 
-            let data: Idata = {};
-            body('#main_table_countries > tbody > tr').each((_ri, row) => {
-                const cols = cheerio(row).find('td');
-                data[formatName(cheerio(cols[0]).text())] = {
-                    total_cases: formatNum(cheerio(cols[1]).text()),
-                    new_cases: formatNum(cheerio(cols[2]).text()),
-                    total_deaths: formatNum(cheerio(cols[3]).text()),
-                    new_deaths: formatNum(cheerio(cols[4]).text()),
-                    total_recovered: formatNum(cheerio(cols[5]).text()),
-                    active_cases: formatNum(cheerio(cols[6]).text()),
-                    serious_cases: formatNum(cheerio(cols[7]).text()),
-                    total_cases_per_million: formatNum(cheerio(cols[8]).text(), true)
-                };
+        res.on('end', () => {
+            let data: Idata = {
+                countries: {},
+                total: null
+            };
+            const doc = parse(da);
+            const body = (doc as Idoc).childNodes[4].childNodes[2];
+            const container = body.childNodes.filter(r =>
+                r.nodeName === 'div' && r.attrs[0].value === 'container')[0];
+            const c_row = container.childNodes.filter(r =>
+                r.nodeName === 'div' && r.attrs[0].value === 'row')[2];
+            const c = c_row.childNodes.filter(r =>
+                r.nodeName === 'div')[0].childNodes.filter(r => r.nodeName === 'div')[0];
+            const [countries, totals] = c.childNodes.filter(r =>
+                r.nodeName === 'table')[0].childNodes.filter(r => r.nodeName === 'tbody');
+
+            const country_rows = countries.childNodes.filter(row => row.nodeName === 'tr');
+            country_rows.forEach(row => {
+                const cols = row.childNodes.filter(col => col.nodeName === 'td');
+                const country = formatName(cols[0].childNodes.length > 1 ?
+                    cols[0].childNodes[1].childNodes[0].value :
+                    cols[0].childNodes[0].value);
+                data[country] = {
+                    total_cases: cols[1].childNodes.length ?
+                        formatNum(cols[1].childNodes[0].value) : 0,
+                    new_cases: cols[2].childNodes.length ?
+                        formatNum(cols[2].childNodes[0].value) : 0,
+                    total_deaths: cols[3].childNodes.length ?
+                        formatNum(cols[3].childNodes[0].value) : 0,
+                    new_deaths: cols[4].childNodes.length ?
+                        formatNum(cols[4].childNodes[0].value) : 0,
+                    total_recovered: cols[5].childNodes.length ?
+                        formatNum(cols[5].childNodes[0].value) : 0,
+                    active_cases: cols[6].childNodes.length ?
+                        formatNum(cols[6].childNodes[0].value) : 0,
+                    serious_cases: cols[7].childNodes.length ?
+                        formatNum(cols[7].childNodes[0].value) : 0,
+                    cases_per_million: cols[8].childNodes.length ?
+                        formatNum(cols[8].childNodes[0].value, true) : 0,
+                }
             });
 
+            const total_row = totals.childNodes.filter(row => row.nodeName === 'tr')[0];
+            const total_cols = total_row.childNodes.filter(col => col.nodeName === 'td');
+            data.total = {
+                total_cases: total_cols[1].childNodes.length ?
+                    formatNum(total_cols[1].childNodes[0].value) : 0,
+                new_cases: total_cols[2].childNodes.length ?
+                    formatNum(total_cols[2].childNodes[0].value) : 0,
+                total_deaths: total_cols[3].childNodes.length ?
+                    formatNum(total_cols[3].childNodes[0].value) : 0,
+                new_deaths: total_cols[4].childNodes.length ?
+                    formatNum(total_cols[4].childNodes[0].value) : 0,
+                total_recovered: total_cols[5].childNodes.length ?
+                    formatNum(total_cols[5].childNodes[0].value) : 0,
+                active_cases: total_cols[6].childNodes.length ?
+                    formatNum(total_cols[6].childNodes[0].value) : 0,
+                serious_cases: total_cols[7].childNodes.length ?
+                    formatNum(total_cols[7].childNodes[0].value) : 0,
+                cases_per_million: total_cols[8].childNodes.length ?
+                    formatNum(total_cols[8].childNodes[0].value, true) : 0
+            }
+
             resolve(data);
-        } else {
-            reject(res.statusText);
-        }
-    }));
+        });
+    });
+
+    req.end()
+});
 
 module.exports = get;
