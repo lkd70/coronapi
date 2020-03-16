@@ -35,7 +35,7 @@ const get = new Promise((resolve, reject) => {
                 const country = formatName(cols[0].childNodes.length > 1 ?
                     cols[0].childNodes[1].childNodes[0].value :
                     cols[0].childNodes[0].value);
-                data[country] = {
+                data.countries[country] = {
                     total_cases: cols[1].childNodes.length ?
                         formatNum(cols[1].childNodes[0].value) : 0,
                     new_cases: cols[2].childNodes.length ?
