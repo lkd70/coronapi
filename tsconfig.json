@@ -7,6 +7,10 @@
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "alwaysStrict": true,
 	},
 	"include": [
 			"./src/*"
