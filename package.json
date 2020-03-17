@@ -1,10 +1,10 @@
 {
   "name": "coronapi",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "A Coronavirus (COVID-19) tracking API.",
   "main": "./dist/index.js",
   "dependencies": {
-    "parse5": "^5.1.1"
+    "cheerio": "^1.0.0-rc.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/LKD70/coronapi#readme",
   "devDependencies": {
+    "@types/cheerio": "^0.22.16",
     "@types/node": "^13.9.1",
     "typescript": "^3.8.3"
   }
